@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://accesorios/scenes/game/game.gd" type="Script" id=1]
+[ext_resource path="res://accesorios/scenes/car/car.tscn" type="PackedScene" id=2]
+[ext_resource path="res://accesorios/scenes/car_enemy/car_npc.tscn" type="PackedScene" id=3]
+[ext_resource path="res://accesorios/ui/mobile/mobile.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 518.5, 10 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 516.5, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 10, 300.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 11.5, 310 )
+
+[node name="game" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="car" parent="." instance=ExtResource( 2 )]
+position = Vector2( 512, 540 )
+
+[node name="game_limit" type="StaticBody2D" parent="." groups=["limit"]]
+
+[node name="north_wall" type="CollisionShape2D" parent="game_limit"]
+position = Vector2( 508.5, 0 )
+shape = SubResource( 2 )
+
+[node name="south_wall" type="CollisionShape2D" parent="game_limit"]
+position = Vector2( 512, 602 )
+shape = SubResource( 1 )
+
+[node name="west_wall" type="CollisionShape2D" parent="game_limit"]
+position = Vector2( 0, 290.5 )
+shape = SubResource( 3 )
+
+[node name="east_wall" type="CollisionShape2D" parent="game_limit"]
+position = Vector2( 1013.5, 300 )
+shape = SubResource( 4 )
+
+[node name="car_npc" parent="." groups=["enemy"] instance=ExtResource( 3 )]
+position = Vector2( 512, 300 )
+
+[node name="Control" parent="." instance=ExtResource( 4 )]
+
+[connection signal="accelerate" from="Control" to="car" method="_on_Control_accelerate"]
+[connection signal="back" from="Control" to="car" method="_on_Control_back"]
+[connection signal="fire_button_pressed" from="Control" to="car" method="_on_Control_fire_button_pressed"]
+[connection signal="left" from="Control" to="car" method="_on_Control_left"]
+[connection signal="right" from="Control" to="car" method="_on_Control_right"]
