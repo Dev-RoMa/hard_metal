@@ -15,4 +15,11 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("ui_end"):
 		print("leaving game!")
-		get_tree().change_scene("res://accesorios/main_menu/main_menu.tscn")
+		change_to_main()
+
+
+func _on_buttonm_exit_pressed():
+	change_to_main()
+	
+func change_to_main():
+	get_tree().change_scene("res://accesorios/main_menu/main_menu.tscn")

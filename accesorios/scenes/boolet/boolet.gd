@@ -17,10 +17,10 @@ func _process(delta):
 	pass
 	
 
-func _on_detect_hit_body_entered(body):
-	if body.is_in_group("enemy"):
-		print("hit an enemy")
-		queue_free()
-	elif body.is_in_group("limit"):
-		print("hit the limit!")
-		queue_free()
+#func _on_detect_hit_body_entered(body):
+#	if body.is_in_group("enemy"):
+#		print("hit an enemy")
+#		queue_free()
+#	elif body.is_in_group("limit"):
+#		print("hit the limit!")
+#		queue_free()

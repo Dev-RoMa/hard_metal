@@ -3,6 +3,8 @@ extends KinematicBody2D
 var speed = 150
 var rotation_speed = 2.0
 var bullet_spawn
+onready var audio = $AudioStreamPlayer2D
+
 
 func _ready():
 	pass
@@ -37,16 +39,19 @@ func fire_weapon():
 	var bullet_scene = preload("res://accesorios/scenes/boolet/boolet.tscn")
 	var bullet = bullet_scene.instance()
 	bullet.direction = bullet_direction
-
 	bullet_spawn.add_child(bullet)
 	bullet.add_to_group("bullets")
-	
 	var bullet_timer = Timer.new()
-	bullet_timer.wait_time = 10.0  # 10 seconds
+	bullet_timer.wait_time = 1.0  # 1 second
 	bullet_timer.one_shot = true
 	bullet_timer.connect("timeout", self, "_on_bullet_timer_timeout", [bullet])
 	bullet.add_child(bullet_timer)
 	bullet_timer.start()
+	audio.play()
+
+func _on_bullet_timer_timeout(bullet):
+	bullet.queue_free()
+
 
 func _on_Control_fire_button_pressed():
 	fire_weapon()
@@ -57,19 +62,27 @@ func _on_Control_back():
 	move_vector = move_vector.rotated(rotation)  # Rotate the movement vector according to character's rotation
 	move_and_slide(move_vector * speed)
 
-func _on_Control_left():
-	# Handle left movement here
-	var move_vector = Vector2(-1, 0)  # Move to the left
-	move_vector = move_vector.rotated(rotation)  # Rotate the movement vector according to character's rotation
-	move_and_slide(move_vector * speed)
-
-func _on_Control_right():
-	# Handle right movement here
-	var move_vector = Vector2(1, 0)  # Move to the right
-	move_vector = move_vector.rotated(rotation)  # Rotate the movement vector according to character's rotation
-	move_and_slide(move_vector * speed)
-	
 func _on_Control_accelerate():
-	var move_vector = Vector2(0, -1)  # Move to the right
-	move_vector = move_vector.rotated(rotation)  # Rotate the movement vector according to character's rotation
-	move_and_slide(move_vector * speed)
+	# Move the character forward continuously when the input is held down
+	Input.action_press("ui_up")
+
+func _on_Control_deaccelerate():
+	Input.action_release("ui_up")
+
+func _on_Control_on_left():
+	Input.action_press("ui_left")
+
+func _on_Control_off_left():
+	Input.action_release("ui_left")
+
+func _on_Control_off_right():
+	Input.action_release("ui_right")
+
+func _on_Control_on_right():
+	Input.action_press("ui_right")
+
+func _on_Control_on_back():
+	Input.action_release("ui_down")
+
+func _on_Control_off_back():
+	Input.action_press("ui_down")

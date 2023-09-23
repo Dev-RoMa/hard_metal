@@ -38,6 +38,6 @@ func _process(delta):
 	move_and_slide(move_vector)
 
 func _on_detect_hit_body_entered(body):
-	if body.is_in_group("enemy"):
+	if body.is_in_group("bullet"):
 		hp -= 1
 		print("Enemy hp =", hp)
